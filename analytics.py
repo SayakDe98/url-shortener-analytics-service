@@ -2,7 +2,7 @@ import re
 import random
 from concurrent import futures
 from typing import Dict
-
+import os
 import grpc
 
 # Generated from: python -m grpc_tools.protoc (see generate_proto.sh)
@@ -132,7 +132,7 @@ def serve():
     )
     analytics_pb2_grpc.add_AnalyticsServicer_to_server(AnalyticsServicer(), server)
 
-    port = "[::]:50052"  # separate port from the Go gRPC service (50051)
+    port = "[::]:" + os.getenv("PORT", 50052)  # separate port from the Go gRPC service (50051)
     server.add_insecure_port(port)
     server.start()
     print(f"Analytics gRPC server listening on {port}")
